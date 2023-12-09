@@ -1,13 +1,11 @@
 package homework;
 
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
 class CustomerTest {
 
@@ -29,7 +27,6 @@ class CustomerTest {
     }
 
     @Test
-    @Disabled("надо удалить") // надо удалить
     @DisplayName("Объект Customer как ключ в карте")
     void customerAsKeyTest() {
         // given
@@ -57,7 +54,6 @@ class CustomerTest {
     }
 
     @Test
-    @Disabled("надо удалить") // надо удалить
     @DisplayName("Сортировка по полю score, итерация по возрастанию")
     void scoreSortingTest() {
         // given
@@ -97,7 +93,6 @@ class CustomerTest {
     }
 
     @Test
-    @Disabled("надо удалить") // надо удалить
     @DisplayName("Модификация коллекции")
     void mutationTest() {
         // given
@@ -119,7 +114,6 @@ class CustomerTest {
     }
 
     @Test
-    @Disabled("надо удалить") // надо удалить
     @DisplayName("Возвращание в обратном порядке")
     void reverseOrderTest() {
         // given
