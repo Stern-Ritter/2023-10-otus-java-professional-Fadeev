@@ -2,6 +2,7 @@ rootProject.name = "otus-professional"
 include("hw01-gradle")
 include("hw02-collections")
 include("hw03-annotations")
+include("hw04-gc")
 
 pluginManagement {
     val dependencyManagement: String by settings
