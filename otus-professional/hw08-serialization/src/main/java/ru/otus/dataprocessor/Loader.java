@@ -1,7 +1,8 @@
 package ru.otus.dataprocessor;
 
-import java.util.List;
 import ru.otus.model.Measurement;
+
+import java.util.List;
 
 public interface Loader {
 
