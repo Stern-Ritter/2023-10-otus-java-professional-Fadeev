@@ -107,6 +107,14 @@ public class Message {
         return field13;
     }
 
+    public Message copy() {
+        Builder messageBuilder = this.toBuilder();
+        if (this.field13 != null) {
+            messageBuilder.field13(this.field13.copy());
+        }
+        return messageBuilder.build();
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -194,12 +202,7 @@ public class Message {
             this.field10 = field10;
             this.field11 = field11;
             this.field12 = field12;
-            ObjectForMessage field13Copy = null;
-            if (field13 != null) {
-                field13Copy = new ObjectForMessage();
-                field13Copy.setData(new ArrayList<>(field13.getData()));
-            }
-            this.field13 = field13Copy;
+            this.field13 = field13;
         }
 
         public Builder field1(String field1) {
@@ -263,12 +266,7 @@ public class Message {
         }
 
         public Builder field13(ObjectForMessage field13) {
-            ObjectForMessage field13Copy = null;
-            if (field13 != null) {
-                field13Copy = new ObjectForMessage();
-                field13Copy.setData(new ArrayList<>(field13.getData()));
-            }
-            this.field13 = field13Copy;
+            this.field13 = field13;
             return this;
         }
 
