@@ -5,6 +5,8 @@ include("hw03-annotations")
 include("hw04-gc")
 include("hw05-aop")
 include("hw06-solid")
+include("hw09-jdbc:demo")
+include("hw09-jdbc:homework")
 
 pluginManagement {
     val dependencyManagement: String by settings
