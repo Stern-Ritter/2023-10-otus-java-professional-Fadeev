@@ -36,3 +36,5 @@ out
 *.iws
 *.ipr
 *.idea
+
+.DS_Store
