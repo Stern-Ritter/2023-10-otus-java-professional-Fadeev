@@ -13,7 +13,9 @@ import ru.otus.crm.service.DbServiceClientImpl;
 import ru.otus.crm.service.DbServiceManagerImpl;
 import ru.otus.jdbc.mapper.DataTemplateJdbc;
 import ru.otus.jdbc.mapper.EntityClassMetaData;
+import ru.otus.jdbc.mapper.EntityClassMetaDataImpl;
 import ru.otus.jdbc.mapper.EntitySQLMetaData;
+import ru.otus.jdbc.mapper.EntitySQLMetaDataImpl;
 
 @SuppressWarnings({"java:S125", "java:S1481"})
 public class HomeWork {
@@ -31,10 +33,9 @@ public class HomeWork {
         var dbExecutor = new DbExecutorImpl();
 
         // Работа с клиентом
-        EntityClassMetaData<Client> entityClassMetaDataClient; // = new EntityClassMetaDataImpl();
-        EntitySQLMetaData entitySQLMetaDataClient = null; // = new EntitySQLMetaDataImpl(entityClassMetaDataClient);
-        var dataTemplateClient = new DataTemplateJdbc<Client>(
-                dbExecutor, entitySQLMetaDataClient); // реализация DataTemplate, универсальная
+        EntityClassMetaData<Client> entityClassMetaDataClient = new EntityClassMetaDataImpl<>(Client.class);
+        EntitySQLMetaData entitySQLMetaDataClient = new EntitySQLMetaDataImpl<>(entityClassMetaDataClient);
+        var dataTemplateClient = new DataTemplateJdbc<>(dbExecutor, entityClassMetaDataClient, entitySQLMetaDataClient);
 
         // Код дальше должен остаться
         var dbServiceClient = new DbServiceClientImpl(transactionRunner, dataTemplateClient);
@@ -46,11 +47,17 @@ public class HomeWork {
                 .orElseThrow(() -> new RuntimeException("Client not found, id:" + clientSecond.getId()));
         log.info("clientSecondSelected:{}", clientSecondSelected);
 
-        // Сделайте тоже самое с классом Manager (для него надо сделать свою таблицу)
+        clientSecondSelected.setName("dbServiceSecondUpdated");
+        dbServiceClient.saveClient(clientSecondSelected);
 
-        EntityClassMetaData<Manager> entityClassMetaDataManager; // = new EntityClassMetaDataImpl();
-        EntitySQLMetaData entitySQLMetaDataManager = null; // = new EntitySQLMetaDataImpl(entityClassMetaDataManager);
-        var dataTemplateManager = new DataTemplateJdbc<Manager>(dbExecutor, entitySQLMetaDataManager);
+        var allClients = dbServiceClient.findAll();
+        log.info("allClients:{}", allClients);
+
+
+        // Сделайте тоже самое с классом Manager (для него надо сделать свою таблицу)
+        EntityClassMetaData<Manager> entityClassMetaDataManager= new EntityClassMetaDataImpl<>(Manager.class);
+        EntitySQLMetaData entitySQLMetaDataManager = new EntitySQLMetaDataImpl<>(entityClassMetaDataManager);
+        var dataTemplateManager = new DataTemplateJdbc<Manager>(dbExecutor, entityClassMetaDataManager, entitySQLMetaDataManager);
 
         var dbServiceManager = new DbServiceManagerImpl(transactionRunner, dataTemplateManager);
         dbServiceManager.saveManager(new Manager("ManagerFirst"));
@@ -60,6 +67,12 @@ public class HomeWork {
                 .getManager(managerSecond.getNo())
                 .orElseThrow(() -> new RuntimeException("Manager not found, id:" + managerSecond.getNo()));
         log.info("managerSecondSelected:{}", managerSecondSelected);
+
+        managerSecondSelected.setLabel("dManagerSecondUpdated");
+        dbServiceManager.saveManager(managerSecondSelected);
+
+        var allManagers = dbServiceManager.findAll();
+        log.info("allManagers:{}", allManagers);
     }
 
     private static void flywayMigrations(DataSource dataSource) {
