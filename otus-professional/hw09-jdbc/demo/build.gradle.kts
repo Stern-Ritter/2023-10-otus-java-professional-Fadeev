@@ -1,4 +1,6 @@
 dependencies {
+    implementation(project(":hw10-cache"))
+
     implementation("ch.qos.logback:logback-classic")
     implementation("org.flywaydb:flyway-core")
     implementation("com.zaxxer:HikariCP")
