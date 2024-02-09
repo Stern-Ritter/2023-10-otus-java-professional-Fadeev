@@ -1,6 +1,7 @@
 package ru.otus;
 
 import javax.sql.DataSource;
+
 import org.flywaydb.core.Flyway;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -16,6 +17,9 @@ import ru.otus.jdbc.mapper.EntityClassMetaData;
 import ru.otus.jdbc.mapper.EntityClassMetaDataImpl;
 import ru.otus.jdbc.mapper.EntitySQLMetaData;
 import ru.otus.jdbc.mapper.EntitySQLMetaDataImpl;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @SuppressWarnings({"java:S125", "java:S1481"})
 public class HomeWork {
@@ -55,9 +59,9 @@ public class HomeWork {
 
 
         // Сделайте тоже самое с классом Manager (для него надо сделать свою таблицу)
-        EntityClassMetaData<Manager> entityClassMetaDataManager= new EntityClassMetaDataImpl<>(Manager.class);
+        EntityClassMetaData<Manager> entityClassMetaDataManager = new EntityClassMetaDataImpl<>(Manager.class);
         EntitySQLMetaData entitySQLMetaDataManager = new EntitySQLMetaDataImpl<>(entityClassMetaDataManager);
-        var dataTemplateManager = new DataTemplateJdbc<Manager>(dbExecutor, entityClassMetaDataManager, entitySQLMetaDataManager);
+        var dataTemplateManager = new DataTemplateJdbc<>(dbExecutor, entityClassMetaDataManager, entitySQLMetaDataManager);
 
         var dbServiceManager = new DbServiceManagerImpl(transactionRunner, dataTemplateManager);
         dbServiceManager.saveManager(new Manager("ManagerFirst"));
@@ -73,6 +77,34 @@ public class HomeWork {
 
         var allManagers = dbServiceManager.findAll();
         log.info("allManagers:{}", allManagers);
+
+        System.out.println("================");
+        // Тестирование cache для Client
+        List<Long> clientIds = new ArrayList<>();
+        for (int i = 0; i < 2_000; i++) {
+            Client savedClient = dbServiceClient.saveClient(new Client(String.format("#%d", i)));
+            long id = savedClient.getId();
+            clientIds.add(id);
+            dbServiceClient.getClient(id);
+        }
+
+        for (Long clientId : clientIds) {
+            dbServiceClient.getClient(clientId);
+        }
+
+        System.out.println("================");
+        // Тестирование cache для Manager
+        List<Long> managerIds = new ArrayList<>();
+        for (int i = 0; i < 2_000; i++) {
+            Manager savedManager = dbServiceManager.saveManager(new Manager(String.format("#%d", i)));
+            long id = savedManager.getNo();
+            managerIds.add(id);
+            dbServiceManager.getManager(id);
+        }
+
+        for (Long managerId : managerIds) {
+            dbServiceManager.getManager(managerId);
+        }
     }
 
     private static void flywayMigrations(DataSource dataSource) {
