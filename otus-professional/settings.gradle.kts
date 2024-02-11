@@ -10,6 +10,7 @@ include("hw08-serialization")
 include("hw09-jdbc:demo")
 include("hw09-jdbc:homework")
 include("hw10-cache")
+include("hw11-jpql")
 
 pluginManagement {
     val dependencyManagement: String by settings
