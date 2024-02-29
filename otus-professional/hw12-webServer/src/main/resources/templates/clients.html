@@ -1,0 +1,44 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>Клиенты</title>
+</head>
+
+<body>
+<ul>
+    <li>
+        <a href="/">Вернуться на главную страницу</a>
+    </li>
+</ul>
+<h4>Список клиентов:</h4>
+<table style="width: 650px">
+    <thead>
+        <tr>
+            <td style="width: 50px">Id</td>
+            <td style="width: 200px">Имя</td>
+            <td style="width: 200px">Адрес</td>
+            <td style="width: 200px">Номер телефона</td>
+        </tr>
+    </thead>
+    <tbody>
+        <#list clients as client>
+            <tr>
+                <td>${client.id}</td>
+                <td>${client.name}</td>
+                <td><#if client.address??>${client.address.street}<#else>адрес не указан</#if></td>
+                <td>
+                    <#list client.phones>
+                        <ol>
+                        <#items as phone>
+                            <li>${phone.number}</li>
+                        </#items>
+                        </ol>
+                        <#else>
+                        <p>номер телефона не указан</p>
+                    </#list>
+                </td>
+            </tr>
+        </#list>
+    </tbody>
+</table>
+</body>
+</html>
