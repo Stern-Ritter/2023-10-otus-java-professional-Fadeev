@@ -12,6 +12,7 @@ include("hw09-jdbc:homework")
 include("hw10-cache")
 include("hw11-jpql")
 include("hw12-webServer")
+include("hw13-di")
 
 pluginManagement {
     val dependencyManagement: String by settings
