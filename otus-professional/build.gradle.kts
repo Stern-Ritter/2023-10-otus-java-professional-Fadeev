@@ -29,6 +29,7 @@ allprojects {
     }
 
     val guava: String by project
+    val reflections: String by project
 
     val jetty: String by project
     val jettyServlet: String by project
@@ -50,6 +51,8 @@ allprojects {
             dependency("org.eclipse.jetty:jetty-io:$jetty")
             dependency("org.eclipse.jetty:jetty-util:$jetty")
             dependency("org.freemarker:freemarker:$freemarker")
+
+            dependency("org.reflections:reflections:$reflections")
         }
     }
 }
