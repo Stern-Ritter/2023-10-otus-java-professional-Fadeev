@@ -1,0 +1,19 @@
+﻿<!DOCTYPE html>
+
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Главная страница</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+</head>
+<body>
+<h1>Стартовая страница сервиса клиентов</h1>
+<Ul>
+    <li>
+        <a href="clients.html" th:href="@{/client}">Открыть список клиентов</a>
+    </li>
+    <li>
+        <a href="createClient.html" th:href="@{/client/create}">Создать нового клиента</a>
+    </li>
+</Ul>
+</body>
+</html>

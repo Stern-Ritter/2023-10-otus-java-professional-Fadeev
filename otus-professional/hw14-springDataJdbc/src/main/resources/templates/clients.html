@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Список клиентов</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+</head>
+
+<body>
+<ul>
+    <li>
+        <a href="index.html" th:href="@{/}">Вернуться на главную страницу</a>
+    </li>
+    <li>
+        <a href="createClient.html" th:href="@{/client/create}">Создать нового клиента</a>
+    </li>
+</ul>
+
+<h1>Список клиентов:</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Идентификатор</th>
+        <th>Имя</th>
+        <th>Адрес</th>
+        <th>Номер телефона</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="client : ${clients}">
+        <td th:text="${client.id}">1</td>
+        <td th:text="${client.name}">Имя Фамилия</td>
+        <td th:text="${client?.address?.street} ?: 'Адрес не указан'">Адрес</td>
+        <td>
+            <ul th:each="phone : ${client?.phones}">
+                <li th:text="${phone.number}"></li>
+            </ul>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
+
