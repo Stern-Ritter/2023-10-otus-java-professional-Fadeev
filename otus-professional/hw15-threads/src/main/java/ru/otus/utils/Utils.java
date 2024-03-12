@@ -1,4 +1,4 @@
-package ru.otus;
+package ru.otus.utils;
 
 public class Utils {
     public static void sleep(int millis) throws InterruptedException {

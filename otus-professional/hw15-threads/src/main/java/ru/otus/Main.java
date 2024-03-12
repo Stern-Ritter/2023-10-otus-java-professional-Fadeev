@@ -2,26 +2,33 @@ package ru.otus;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import ru.otus.printer.NumberPrinter;
+import ru.otus.sequence.IntegerSequence;
+import ru.otus.utils.Utils;
 
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Main {
     private final static Logger log = LoggerFactory.getLogger(Main.class);
-    private final static int threadsCount = 2;
-    private final static int startIntervalMillis = 1000;
-    private final static int workTimeMillis = 10000;
+    private final static int numberOfThreads = 2;
+    private final static int startIntervalMillis = 500;
+    private final static int printIntervalMillis = 500;
+    private final static int workTimeMillis = 50000;
 
     public static void main(String[] args) {
-        ExecutorService es = Executors.newFixedThreadPool(threadsCount);
+        List<Thread> workingThreads = new ArrayList<>();
         Object monitor = new Object();
 
         try {
             log.info("Запуск потоков: ");
-            for (int number = 1; number <= threadsCount; number++) {
-                NumberPrinter numberPrinter = new NumberPrinter(number, monitor);
+            for (int number = 1; number <= numberOfThreads; number++) {
+                Thread thread = new Thread(new NumberPrinter(numberOfThreads, printIntervalMillis, monitor, number,
+                        new IntegerSequence()));
+
                 log.info("Поток #{} запущен", number);
-                es.execute(numberPrinter);
+                workingThreads.add(thread);
+                thread.start();
                 Utils.sleep(startIntervalMillis);
             }
 
@@ -29,7 +36,10 @@ public class Main {
         } catch (InterruptedException e) {
             log.info("Основной поток прерван.");
         }
+
         log.info("Выключение потоков: ");
-        es.shutdownNow();
+        for (Thread thread : workingThreads) {
+            thread.interrupt();
+        }
     }
 }
