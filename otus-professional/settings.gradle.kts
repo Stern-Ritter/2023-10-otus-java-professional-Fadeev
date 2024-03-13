@@ -15,6 +15,7 @@ include("hw12-webServer")
 include("hw13-di")
 include("hw14-springDataJdbc")
 include("hw15-threads")
+include("hw16-cuncurrentCollections")
 
 pluginManagement {
     val dependencyManagement: String by settings
