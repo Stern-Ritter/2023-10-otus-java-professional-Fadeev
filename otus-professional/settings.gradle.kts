@@ -14,6 +14,7 @@ include("hw11-jpql")
 include("hw12-webServer")
 include("hw13-di")
 include("hw14-springDataJdbc")
+include("hw15-threads")
 
 pluginManagement {
     val dependencyManagement: String by settings
