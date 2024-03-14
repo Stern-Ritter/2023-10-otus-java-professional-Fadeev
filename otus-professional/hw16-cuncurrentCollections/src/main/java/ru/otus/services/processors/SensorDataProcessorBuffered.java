@@ -9,8 +9,8 @@ import ru.otus.lib.SensorDataBufferedWriter;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
-import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.PriorityBlockingQueue;
 
 @SuppressWarnings({"java:S1068", "java:S125"})
 public class SensorDataProcessorBuffered implements SensorDataProcessor {
@@ -23,7 +23,7 @@ public class SensorDataProcessorBuffered implements SensorDataProcessor {
     public SensorDataProcessorBuffered(int bufferSize, SensorDataBufferedWriter writer) {
         this.bufferSize = bufferSize;
         this.writer = writer;
-        this.dataBuffer = new ArrayBlockingQueue<>(bufferSize);
+        this.dataBuffer = new PriorityBlockingQueue<>(bufferSize, Comparator.comparing(SensorData::getMeasurementTime));
     }
 
     @Override
@@ -42,8 +42,8 @@ public class SensorDataProcessorBuffered implements SensorDataProcessor {
             if (dataBuffer.drainTo(data, bufferSize) == 0) {
                 return;
             }
-            List<SensorData> sortedData = sortData(data, Comparator.comparing(SensorData::getMeasurementTime));
-            writer.writeBufferedData(sortedData);
+
+            writer.writeBufferedData(data);
         } catch (Exception e) {
             log.error("Ошибка в процессе записи буфера", e);
         }
@@ -58,11 +58,5 @@ public class SensorDataProcessorBuffered implements SensorDataProcessor {
         if (dataBuffer.size() >= bufferSize) {
             flush();
         }
-    }
-
-    private List<SensorData> sortData(List<SensorData> data, Comparator<SensorData> comparator) {
-        return data.stream()
-                .sorted(comparator)
-                .toList();
     }
 }
