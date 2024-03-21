@@ -16,6 +16,7 @@ include("hw13-di")
 include("hw14-springDataJdbc")
 include("hw15-threads")
 include("hw16-cuncurrentCollections")
+include("hw17-multiprocess")
 
 pluginManagement {
     val dependencyManagement: String by settings
@@ -23,6 +24,7 @@ pluginManagement {
     val johnrengelmanShadow: String by settings
     val sonarlint: String by settings
     val spotless: String by settings
+    val protobufVer: String by settings
 
     plugins {
         id("io.spring.dependency-management") version dependencyManagement
@@ -30,5 +32,6 @@ pluginManagement {
         id("com.github.johnrengelman.shadow") version johnrengelmanShadow
         id("name.remal.sonarlint") version sonarlint
         id("com.diffplug.spotless") version spotless
+        id("com.google.protobuf") version protobufVer
     }
 }

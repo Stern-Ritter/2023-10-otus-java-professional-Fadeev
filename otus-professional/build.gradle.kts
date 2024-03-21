@@ -35,11 +35,15 @@ allprojects {
     val jettyServlet: String by project
     val freemarker: String by project
 
+    val protobufBom: String by project
+    val grpc: String by project
+
     apply(plugin = "io.spring.dependency-management")
     dependencyManagement {
         dependencies {
             imports {
                 mavenBom(BOM_COORDINATES)
+                mavenBom("com.google.protobuf:protobuf-bom:$protobufBom")
             }
             dependency("com.google.guava:guava:$guava")
 
@@ -53,6 +57,10 @@ allprojects {
             dependency("org.freemarker:freemarker:$freemarker")
 
             dependency("org.reflections:reflections:$reflections")
+
+            dependency("io.grpc:grpc-netty:$grpc")
+            dependency("io.grpc:grpc-protobuf:$grpc")
+            dependency("io.grpc:grpc-stub:$grpc")
         }
     }
 }
